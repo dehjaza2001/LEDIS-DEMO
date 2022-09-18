@@ -5,7 +5,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #9e9ca1;
   color: white;
   background: url("../public/desktop.jpg");
 }
@@ -26,11 +25,11 @@ code {
 
 .container {
   position: fixed;
-  top: 25%;
+  top: 50%;
   left: 50%;
   width: 50%;
-  height: 60%;
-  transform: translate(-50%, -10%);
+  height: 70%;
+  transform: translate(-50%, -50%);
   /* border: 2px solid;
   justify-content: center;
   background-color: black;

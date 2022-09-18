@@ -23,22 +23,20 @@ function App() {
       let value = arr[1];
       const item = new LString(value);
       localStorage.setItem(key, JSON.stringify(item));
-      return "OK";
+        return "OK";
     }
   };
 
   const handleGet = (key) => {
-    const itemStr = localStorage.getItem(key);
-    if (!itemStr) {
-      return "Error : Key not found!";
-    }
-    const item = JSON.parse(itemStr);
-    if (item.type !== "string") return "ERROR : value stored in key is not the string type";
-
+    let item = JSON.parse(localStorage.getItem(key));
+    if (item && item.type !== "string") return "ERROR : value stored in key is not the string type";
     const now = new Date();
-    if (item.expiry && now.getTime() > item.expiry) {
+    if (item && item.expiry && now.getTime() > item.expiry) {
       localStorage.removeItem(key);
-      return "Key was expired";
+      item = null;
+    }
+    if (!item) {
+      return "Error : Key not found!";
     }
     return item.value;
   };
@@ -65,6 +63,7 @@ function App() {
       for (let i = 1; i < arr.length; i++) {
         lItem.add(arr[i]);
       }
+      
       localStorage.setItem(key, JSON.stringify(lItem));
       let leng = lItem.value.length;
       return `>(interger) ${leng}`;
@@ -279,7 +278,7 @@ function App() {
 
   const handleSInter = (keys) => {
     const arr_keys = keys.trim().split(/\s+/);
-    if (!arr_keys.length) return "Error: Wrong syntax (Must be EXPIRE key seconds)";
+    if (!arr_keys.length) return "Error: Wrong syntax (Must be SINTER [key1] [key2] [key3] ...:";
     var setA = new Set(JSON.parse(localStorage.getItem(arr_keys[0])).value);
     for(let i = 1 ; i < arr_keys.length ; i++){
       let item = JSON.parse(localStorage.getItem(arr_keys[i])).value;
@@ -292,8 +291,6 @@ function App() {
   };
 
   const commands = {
-    whoami: "jackharper",
-    cd: (directory) => `changed path to ${directory}`,
     SET: (key_value) => handleSet(key_value),
     GET: (key) => handleGet(key),
     RPUSH: (key_values) => handleRPush(key_values),
@@ -311,7 +308,10 @@ function App() {
   return (
     <Draggable>
       <div className="container">
-        <ReactTerminal commands={commands} prompt="ledis>>" />
+        <ReactTerminal
+        commands={commands} 
+        prompt="ledis>>"
+        errorMessage="Invalid command!" />
       </div>
     </Draggable>
   );
