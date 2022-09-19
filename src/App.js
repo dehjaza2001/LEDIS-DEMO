@@ -29,7 +29,7 @@ function App() {
 
   const handleGet = (key) => {
     let item = JSON.parse(localStorage.getItem(key));
-    if (item && item.type !== "string") return "ERROR : value stored in key is not the string type";
+    if (item && item.type !== "string") return "ERROR : value in key is not the string type";
     const now = new Date();
     if (item && item.expiry && now.getTime() > item.expiry) {
       localStorage.removeItem(key);
@@ -57,7 +57,7 @@ function App() {
       }
 
       if (item && item.type !== "list")
-        return "ERROR : value is not the list type";
+        return "ERROR : value in key is not the list type";
       const value = item ? item.value : [];
       const lItem = new LList(value);
       for (let i = 1; i < arr.length; i++) {
@@ -306,6 +306,7 @@ function App() {
     TTL: (key) => handleTTL(key),
   };
   return (
+ 
     <Draggable>
       <div className="container">
         <ReactTerminal
@@ -314,6 +315,8 @@ function App() {
         errorMessage="Invalid command!" />
       </div>
     </Draggable>
+  
+    
   );
 }
 
