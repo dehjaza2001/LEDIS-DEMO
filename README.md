@@ -29,6 +29,8 @@ And I dealt with those issues one by one in that sequence.
 Concerning Ledis's UI/UX, I attempted to rebuild the terminal from scratch. Unfortunately, things did not go as planned. After spending so much effort developing my own terminal, I decided to look for existing react libraries in the community. And I discovered react-terminal, a package that allows you to use the terminal as a component in a react project. It allows you to customize commands, prompts, and error messages, as well as callbacks (async/non-async) for each command. I utilized those functionalities to build this app.
 To create the draggable terminal window, I also use the react-draggable package. Because I want to create the web page to look like the MacOS UI.
 
+![UI demo](/public/demoUI.png "UI demo")
+
 ## Data storage
 
 When it come to the storage, within the scope of this assignment, I used the local storage of the browser to storing the data. The reasons are : 

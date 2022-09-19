@@ -45,7 +45,7 @@ function App() {
     const arr = key_values.trim().split(/\s+/);
     //console.log(arr);
     if (arr.length < 2) {
-      return "Error: Wrong syntax. (Must be KEY value1 [value2...])";
+      return "Error: Wrong syntax. (Must be RPUSH KEY value1 [value2...])";
     } else {
       let key = arr[0];
       let item = JSON.parse(localStorage.getItem(key));
@@ -113,7 +113,6 @@ function App() {
       const list = item.value;
       let start = parseInt(arr[1]);
       let stop = parseInt(arr[2]);
-      console.log(start, stop);
       if (isNaN(start) || isNaN(stop) || start < 0 || stop >= list.length)
         return "Error: Start and stop must be non-negative integers and within the range of list";
 
@@ -265,7 +264,7 @@ function App() {
   const handleTTL = (key) => {
     const item = JSON.parse(localStorage.getItem(key));
     if (!item) return "Error : Key not found!";
-    if(item.expiry == null) return "Key has no TTL"
+    if(item.expiry == null) return "Key has no TTL";
     const now = new Date();
     const time = item.expiry - now.getTime();
     if (item.expiry && time < 0) {
@@ -279,10 +278,13 @@ function App() {
   const handleSInter = (keys) => {
     const arr_keys = keys.trim().split(/\s+/);
     if (!arr_keys.length) return "Error: Wrong syntax (Must be SINTER [key1] [key2] [key3] ...:";
-    var setA = new Set(JSON.parse(localStorage.getItem(arr_keys[0])).value);
+    let item = JSON.parse(localStorage.getItem(arr_keys[0]));
+    if(!item || item.type !== "set") return "Key must be set type";
+    var setA = new Set(item.value);
     for(let i = 1 ; i < arr_keys.length ; i++){
-      let item = JSON.parse(localStorage.getItem(arr_keys[i])).value;
-      let setB = new Set(item);
+      item = JSON.parse(localStorage.getItem(arr_keys[i]));
+      if(!item || item.type !== "set") return "Key must be set type";
+      let setB = new Set(item.value);
       setA = getIntersection(setA,setB);
     }
 
